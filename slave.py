@@ -73,7 +73,6 @@ async def unban(ctx, *, member):
             await ctx.send(f'{user.mention} has been unbanned')
             return
 
-
 @client.command()
 @commands.has_permissions(kick_members=True)
 async def kick(ctx, user: discord.Member, *, reason="No reason provided"):
@@ -87,7 +86,6 @@ async def kick(ctx, user: discord.Member, *, reason="No reason provided"):
         await ctx.message.delete()
         await ctx.channel.send(embed=kick)
         await user.send(embed=kick)
-
 
 @client.command(pass_context = True)
 @commands.has_permissions(administrator=True)
@@ -127,7 +125,6 @@ async def unmute(ctx, member: discord.Member):
         role = discord.utils.get(member.guild.roles, name='Muted')
         await ctx.author.remove_roles(role)
 
-
         embed=discord.Embed(
 
         title="User Unmuted!",
@@ -138,11 +135,6 @@ async def unmute(ctx, member: discord.Member):
         await ctx.send(embed=embed)
 
 # Verification
-
-@client.event
-async def on_member_join(member):
-    role = discord.utils.get(member.server.roles, id="<741340563168821390>")
-    await client.add_roles(member, role)
 
 @client.command()
 @commands.is_owner()
@@ -167,18 +159,14 @@ async def verifymsg(ctx):
     verify = await ctx.send(embed = verify)
     await verify.add_reaction('<a:check:829394425460555796>')
 
-    # @client.event
-    # async def on_reaction_add(reaction, user):
-    #     async for user in reaction.users():
-    #         member = f'{user}'
-    #     role = discord.utils.get(ctx.message.guild.roles, id='<741340563168821390>')
-    #     await remove_roles(member, role)
-
-    @client.event
-    async def on_reaction_add(reaction, user):
-      if reaction.emoji == '<a:check:829394425460555796>':
-        role = discord.utils.get(user.guild.roles, name='*Bell Ring*')
-        await client.remove_roles(user, role)
+@client.event
+async def on_reaction_add(reaction, user):
+  # Ch = '706018939460911125'
+  # if reaction.message.channel.id != Ch:
+  #   return
+  if reaction.emoji == '<a:check:829394425460555796>':
+    Blind = discord.utils.get(user.server.roles, name='Blind')
+    await client.add_roles(user, Blind)
 
 
 client.run(os.getenv('DISCORD_TOKEN'))
